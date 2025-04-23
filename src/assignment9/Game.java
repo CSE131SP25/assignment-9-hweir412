@@ -6,17 +6,35 @@ import edu.princeton.cs.introcs.StdDraw;
 
 public class Game {
 	
+	private Snake snake;
+	private Food food;
+	
 	public Game() {
 		StdDraw.enableDoubleBuffering();
 		
-		//FIXME - construct new Snake and Food objects
+		snake = new Snake();
+		food = new Food();
 	}
 	
 	public void play() {
-		while (true) { //TODO: Update this condition to check if snake is in bounds
+		while (snake.isInbounds()) { //TODO: Update this condition to check if snake is in bounds
 			int dir = getKeypress();
-			//Testing only: you will eventually need to do more work here
-			System.out.println("Keypress: " + dir);
+			System.out.println(dir); 
+			
+			snake.changeDirection(dir);
+			snake.move();
+			
+			System.out.println("Head position: " + snake.getHead());
+			System.out.println("In bounds? " + snake.isInbounds());
+			
+			
+			if(snake.eatFood(food)) {
+				food = new Food();
+			}
+			
+			
+			updateDrawing();
+			
 			
 			/*
 			 * 1. Pass direction to your snake
@@ -53,6 +71,12 @@ public class Game {
 		 * 3. Pause (50 ms is good)
 		 * 4. Show
 		 */
+		
+		StdDraw.clear();
+		snake.draw();
+		food.draw();
+		StdDraw.pause(50);
+		StdDraw.show();
 	}
 	
 	public static void main(String[] args) {
